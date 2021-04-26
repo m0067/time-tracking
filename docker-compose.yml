@@ -1,0 +1,51 @@
+version: "3.3"
+services:
+
+  time_tracking_percona:
+    container_name: time_tracking_percona
+    restart: always
+    image: percona:ps-5.7
+    working_dir: /opt/sqldump
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "10091:3306"
+    networks:
+      time_tracking:
+        aliases:
+          - time_tracking_percona
+
+  time_tracking_php:
+    user: dev:dev
+    container_name: time_tracking_php
+    build: ./docker_config/php
+    restart: always
+    volumes:
+      - ./${SYMFONY_APP}:/var/www/time-tracking
+      - ./docker_config/php/www2.conf:/usr/local/etc/php-fpm.d/www2.conf
+    working_dir: /var/www/time-tracking
+    ports:
+      - "10092:9000"
+    networks:
+      time_tracking:
+        aliases:
+          - time_tracking_php
+
+
+  time_tracking_nginx:
+    container_name: time_tracking_nginx
+    restart: always
+    image: nginx:stable-alpine
+    volumes:
+      - ./docker_config/nginx/mime.types:/etc/nginx/mime.types
+      - ./docker_config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./${SYMFONY_APP}/public/bundles:/var/www/time-tracking/public/bundles
+    ports:
+      - "10093:80"
+    networks:
+      time_tracking:
+        aliases:
+          - time_tracking_nginx
+
+networks:
+  time_tracking:
