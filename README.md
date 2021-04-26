@@ -1,6 +1,6 @@
-#Time tracking admin
+# Time tracking admin
 
-##Init project
+## Init project
 
 Run
 
@@ -12,7 +12,7 @@ Add local hostname `time-tracking.loc` to  `127.0.0.1`
 
 See project here http://time-tracking.loc:10093/
 
-###In details
+### In details
 
 Install composer dependencies
 ```bash
@@ -36,8 +36,8 @@ docker-compose exec time_tracking_php ./bin/console doctrine:migrations:migrate 
 ```
 
 
-##Tests
-##Run tests
+## Tests
+### Run tests
 
 ```bash
 docker-compose exec time_tracking_php php vendor/bin/codecept build
