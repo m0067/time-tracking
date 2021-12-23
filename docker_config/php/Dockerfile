@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8-fpm
 
 COPY composer-setup.sh /composer-setup.sh
 RUN chmod +x /composer-setup.sh
